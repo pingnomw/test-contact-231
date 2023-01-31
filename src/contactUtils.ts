@@ -1,3 +1,5 @@
+import React from "react"
+
 export interface Contact {
     id: string,
     firstName: string,
@@ -6,13 +8,22 @@ export interface Contact {
     photo: string, // URL
 }
 
+export interface ContactProp {
+    contact: Contact,
+    children?: JSX.Element | React.Component
+}
+export interface ContactsListProp {
+    contacts: Contact[],
+    children?: JSX.Element | React.Component
+}
+
 export enum FullNameConfig {
     FIRST_LAST,       // John Smith
     LAST_COMMA_FIRST, // Smith, John
     LAST_FIRST,       // Smith John (useful for East Asian names)
 }
 
-export function getFullName(contact: Contact, config: FullNameConfig){
+export function getFullName(contact: Contact, config?: FullNameConfig){
     let out: string
 
     // if any part of the name is missing, return whatever is not
