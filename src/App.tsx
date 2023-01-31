@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import List from './components/list';
+import ContactsList from './components/list';
 import { Contact } from './contactUtils';
 import { populateContacts } from './httpUtils';
 
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="App">
-      <List contacts={contactsList}/>
+      <ContactsList contacts={contactsList}/>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { checkPhoto, ContactProp, FullNameConfig, getFullName } from "../contactUtils";
 
 
-export default function Detail(props: ContactProp){
+export default function ContactsDetail(props: ContactProp){
     const contactInfo = props.contact
     const fullName = getFullName(contactInfo, FullNameConfig.FIRST_LAST)
 
