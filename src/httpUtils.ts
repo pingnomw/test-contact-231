@@ -9,6 +9,7 @@ export interface ResponseBody {
 
 export async function populateContacts(){
     const res = await axios.get<ResponseBody>(API_ENDPOINT)
+    console.log(res.data)
     if (res.status < 400){
         return res.data.data
     } else {

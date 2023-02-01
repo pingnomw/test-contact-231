@@ -8,8 +8,16 @@ export interface Contact {
     photo: string, // URL
 }
 
+export const emptyContact = {
+    id: "",
+    firstName: "",
+    lastName: "",
+    age: -1,
+    photo: "",
+} as const
+
 export interface ContactProp {
-    contact: Contact,
+    contact: Contact | null,
     children?: JSX.Element | React.Component
 }
 export interface ContactsListProp {
