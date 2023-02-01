@@ -1,10 +1,12 @@
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { checkPhoto, ContactProp, emptyContact, FullNameConfig, getFullName } from "../contactUtils";
 import detailStyles from "./detailStyles";
 
 export default function ContactDetail(props: ContactProp){
   const contactInfo = props.contact ?? emptyContact
   const fullName = getFullName(contactInfo, FullNameConfig.FIRST_LAST)
+  const navigate = useNavigate()
 
   return (
     <div style={{
@@ -26,6 +28,12 @@ export default function ContactDetail(props: ContactProp){
             {(contactInfo.age >= 0) ?
               <Typography sx={detailStyles.detail}>Age: {contactInfo.age}</Typography>
             : null}
+          </div>
+
+          <div>
+            <Button variant="outlined" onClick={() => navigate("/edit")}>
+              Edit
+            </Button>
           </div>
         </>
       }

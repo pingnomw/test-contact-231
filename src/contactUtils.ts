@@ -54,6 +54,6 @@ export function getFullName(contact: Contact, config?: FullNameConfig){
 }
 
 const PHOTO_URL_REGEX = /^(?:https?|ftp|file):\/\//
-export function checkPhoto(contact: Contact){
+export function checkPhoto<T extends {photo: string}>(contact: T){
     return PHOTO_URL_REGEX.test(contact.photo)
 }
