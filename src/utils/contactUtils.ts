@@ -1,6 +1,6 @@
 import React from "react"
 
-const NO_PHOTO = "N/A"
+export const NO_PHOTO = "N/A"
 export const DIGITS_ONLY_REGEX = /^\d+$/
 const PHOTO_URL_REGEX = /^(?:https?|ftp|file):\/\//
 
@@ -79,7 +79,11 @@ export enum FullNameConfig {
     LAST_FIRST,       // Smith John (useful for East Asian names)
 }
 
-export function getFullName(contact: Contact, config?: FullNameConfig){
+interface FullName {
+    firstName: string,
+    lastName: string
+}
+export function getFullName(contact: FullName, config?: FullNameConfig){
     let out: string
 
     // if any part of the name is missing, return whatever is not

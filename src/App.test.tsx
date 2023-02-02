@@ -6,7 +6,7 @@ import App from './App';
 import userEvent from '@testing-library/user-event';
 import { Contact_noId } from './utils/contactUtils';
 import { BrowserRouter } from 'react-router-dom';
-import { populateContacts } from './utils/httpUtils';
+import { modifyContact, populateContacts } from './utils/httpUtils';
 
 
 // mock httpUtils module
@@ -57,4 +57,36 @@ test("Renders details", async () => {
 		await user.click(listItem)
 	})
   expect(screen.getByText(/age/i)).toBeInTheDocument()
+})
+
+test("Allows a contact to be edited", async () => {
+  const user = userEvent.setup()
+  render(<Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>)
+
+  await waitFor(() => expect(screen.getByText(/abc/i)))
+  const listItem = screen.getByText(/abc/i)
+  await act(async () => {
+		await user.click(listItem)
+	})
+
+  await waitFor(() => expect(screen.getByRole('button', { name: /edit/i })))
+  const editButton = screen.getByRole('button', { name: /edit/i })
+  await act(async () => {
+		await user.click(editButton)
+	})
+
+  await waitFor(() => expect(screen.getByRole('textbox', { name: /first name/i })))
+  expect(screen.getByRole('textbox', { name: /first name/i })).toHaveValue("Abc")
+
+  await waitFor(() => expect(screen.getByRole('button', { name: /save/i })))
+  const saveButton = screen.getByRole('button', { name: /save/i })
+  await act(async () => {
+		await user.click(saveButton)
+	})
+
+  expect(modifyContact).toBeCalled()
 })
