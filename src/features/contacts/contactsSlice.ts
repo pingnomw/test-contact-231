@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { Contact, FullNameConfig } from '../../contactUtils';
+import { Contact, FullNameConfig } from '../../utils/contactUtils';
 
 export interface ContactsState {
   selectedContact: Contact | null,
