@@ -1,5 +1,9 @@
 import React from "react"
 
+const NO_PHOTO = "N/A"
+export const DIGITS_ONLY_REGEX = /^\d+$/
+const PHOTO_URL_REGEX = /^(?:https?|ftp|file):\/\//
+
 export interface Contact {
     id: string,
     firstName: string,
@@ -8,13 +12,57 @@ export interface Contact {
     photo: string, // URL
 }
 
+// like Contact, but there is no ID
+export interface Contact_noId {
+    firstName: string,
+    lastName: string,
+    age: number,
+    photo: string,
+}
+
+// like Contact_noId, but everything is a string because HTML input elements always contain string
+export interface Contact_str {
+    firstName: string,
+    lastName: string,
+    age: string,
+    photo: string,
+}
+
 export const emptyContact = {
     id: "",
     firstName: "",
     lastName: "",
-    age: -1,
+    age: 0,
     photo: "",
 } as const
+
+export const emptyContactStr = {
+    ...emptyContact,
+    age: "",
+} as const
+
+// converts Contact_noId to Contact_str
+export function contactNoId2str(contact: Contact_noId) {
+    return { ...contact, age: String(contact.age)} as Contact_str
+}
+
+// converts Contact_str to Contact_noId
+// CAUTION -- age should be verified first otherwise it could return NaN or Infinity
+export function str2contactNoId(contactStr: Contact_str) {
+    return { ...contactStr, age: Number(contactStr.age)} as Contact_noId
+}
+
+// the above but with checking
+export function prepareContact(contactStr: Contact_str) {
+    const out = str2contactNoId(contactStr)
+    if (!checkPhoto(out)){
+        out.photo = NO_PHOTO
+    }
+    if (!isFinite(out.age)){ // if age is infinity, NaN, or undefined
+        out.age = 0
+    }
+    return out
+}
 
 export interface ContactProp {
     contact: Contact | null,
@@ -53,7 +101,6 @@ export function getFullName(contact: Contact, config?: FullNameConfig){
     return out.trim()
 }
 
-const PHOTO_URL_REGEX = /^(?:https?|ftp|file):\/\//
 export function checkPhoto<T extends {photo: string}>(contact: T){
     return PHOTO_URL_REGEX.test(contact.photo)
 }

@@ -1,6 +1,6 @@
 import { Avatar, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { checkPhoto, ContactProp, emptyContact, FullNameConfig, getFullName } from "../contactUtils";
+import { checkPhoto, ContactProp, emptyContact, FullNameConfig, getFullName } from "../utils/contactUtils";
 import detailStyles from "./detailStyles";
 
 export default function ContactDetail(props: ContactProp){

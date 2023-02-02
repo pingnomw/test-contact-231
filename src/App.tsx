@@ -4,9 +4,9 @@ import './App.css';
 import { useAppSelector } from './app/hooks';
 import EditContact from './components/edit';
 import Homepage from './components/home';
-import { Contact } from './contactUtils';
+import { Contact } from './utils/contactUtils';
 import { getSelectedContact } from './features/contacts/contactsSlice';
-import { populateContacts } from './httpUtils';
+import { populateContacts } from './utils/httpUtils';
 
 function App() {
   const [contactsList, setContactsList] = useState<Contact[]>([])
@@ -36,7 +36,6 @@ function App() {
     <div className="App">
       <Routes>
         <Route path='/' element={<Homepage contacts={contactsList} />} />
-        <Route path='/view/*' element={<Homepage contacts={contactsList} />} />
         <Route path='/edit/*' element={<EditContact contact={selected} />} />
       </Routes>
     </div>

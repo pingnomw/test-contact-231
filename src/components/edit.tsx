@@ -1,10 +1,9 @@
 import { Button, TextField } from "@mui/material";
-import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_ENDPOINT } from "../constants";
-import { checkPhoto, ContactProp, emptyContact } from "../contactUtils";
+import { checkPhoto, contactNoId2str, ContactProp, DIGITS_ONLY_REGEX, emptyContact, prepareContact } from "../utils/contactUtils";
+import { createNewContact, modifyContact } from "../utils/httpUtils";
 import editStyles from "./editStyles";
 
 export default function EditContact(props: ContactProp){
@@ -12,26 +11,22 @@ export default function EditContact(props: ContactProp){
   const [isLoading, setLoading] = useState<boolean>(false)
 
   const contactInfo = props.contact ?? emptyContact
-  const {id, age, ..._contactValues} = contactInfo
-  const contactValues = {..._contactValues, age: String(age)}
+  const {id, ..._contactValues} = contactInfo
+  const contactValues = contactNoId2str(_contactValues)
 
   const formik = useFormik({
     initialValues: contactValues,
     onSubmit: async (values) => {
-      const preparedValues = {...values, age: Number(values.age)}
+      const preparedValues = prepareContact(values)
       console.log(preparedValues)
 
       try {
         setLoading(true)
 
-        if (!checkPhoto(preparedValues)){
-          preparedValues.photo = "N/A"
-        }
-
         if (id){ // editing an existing contact
-          await axios.put(API_ENDPOINT + "/" + id, values)
+          modifyContact(id, preparedValues)
         } else { // creating a new contact
-          await axios.post(API_ENDPOINT, values)
+          createNewContact(preparedValues)
         }
         setLoading(false)
         navigate(-1)
@@ -42,6 +37,29 @@ export default function EditContact(props: ContactProp){
         console.log(err)
         alert(error.message)
       }
+    },
+    validate: (values) => {
+      interface FormikErrors {
+        firstName?: string,
+        lastName?: string,
+        age?: string,
+        photo?: string,
+      }
+      const errors = {} as FormikErrors
+
+      if (values.firstName.length === 0){
+        errors.firstName = "First name is required"
+      }
+      if (values.lastName.length === 0){
+        errors.lastName = "Last name is required"
+      }
+      if (!DIGITS_ONLY_REGEX.test(values.age)){
+        errors.age = "Must be a number of 0 or greater"
+      }
+      if (values.photo.length > 0 && values.photo !== "N/A" && !checkPhoto(values)){
+        errors.photo = "Photo URL must be a valid URL, the text \"N/A\", or blank"
+      }
+
     }
   })
 

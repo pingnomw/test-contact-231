@@ -1,11 +1,11 @@
-import { Button, Drawer, Fab } from '@mui/material';
+import { Button, Drawer } from '@mui/material';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import ContactDetail from '../components/detail';
 import ContactsList from '../components/list';
-import { ContactsListProp } from '../contactUtils';
+import { ContactsListProp } from '../utils/contactUtils';
 import { deselectContact, getSelectedContact } from '../features/contacts/contactsSlice';
 
 export default function Homepage(props: ContactsListProp){

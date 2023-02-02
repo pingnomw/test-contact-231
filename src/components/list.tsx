@@ -1,6 +1,6 @@
 import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
-import { ContactsListProp, getFullName } from "../contactUtils";
+import { ContactsListProp, getFullName } from "../utils/contactUtils";
 import { selectContact } from "../features/contacts/contactsSlice";
 
 export default function ContactsList(props: ContactsListProp){
