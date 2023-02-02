@@ -82,15 +82,15 @@ export default function EditContact(props: ContactProp){
     }}>
       <form onSubmit={formik.handleSubmit}>
         <TextField style={editStyles.textInput} fullWidth variant="outlined"
-          id="firstName" name="firstName" label="First Name"
+          id="firstName" name="firstName" label="First Name" required
           value={formik.values.firstName} onChange={formik.handleChange}
         />
         <TextField style={editStyles.textInput} fullWidth variant="outlined"
-          id="lastName" name="lastName" label="Last Name"
+          id="lastName" name="lastName" label="Last Name" required
           value={formik.values.lastName} onChange={formik.handleChange}
         />
         <TextField style={editStyles.textInput} fullWidth variant="outlined"
-          id="age" name="age" label="Age" type="number"
+          id="age" name="age" label="Age" type="number" required
           value={formik.values.age} onChange={formik.handleChange}
         />
         <TextField style={editStyles.textInput} fullWidth variant="outlined"
