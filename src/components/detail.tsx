@@ -2,6 +2,7 @@ import { Avatar, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { checkPhoto, ContactProp, emptyContact, FullNameConfig, getFullName } from "../utils/contactUtils";
 import detailStyles from "./detailStyles";
+import { Edit } from '@mui/icons-material';
 
 export default function ContactDetail(props: ContactProp){
   const contactInfo = props.contact ?? emptyContact
@@ -32,6 +33,7 @@ export default function ContactDetail(props: ContactProp){
 
           <div>
             <Button variant="outlined" onClick={() => navigate("/edit")}>
+              <Edit />
               Edit
             </Button>
           </div>

@@ -108,3 +108,16 @@ export function getFullName(contact: FullName, config?: FullNameConfig){
 export function checkPhoto<T extends {photo: string}>(contact: T){
     return PHOTO_URL_REGEX.test(contact.photo)
 }
+
+export function sortContactsList(a: Contact, b: Contact, order?: FullNameConfig){
+    const nameA = getFullName(a, order)
+    const nameB = getFullName(b, order)
+
+    if (nameA < nameB){
+        return -1
+    } else if (nameA > nameB){
+        return 1
+    } else {
+        return 0
+    }
+}

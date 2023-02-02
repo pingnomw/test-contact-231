@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import EditContact from './components/edit';
 import Homepage from './components/home';
-import { Contact } from './utils/contactUtils';
-import { getSelectedContact } from './features/contacts/contactsSlice';
+import { Contact, sortContactsList } from './utils/contactUtils';
+import { getSelectedContact, getDisplayOrder, deselectContact } from './features/contacts/contactsSlice';
 import { populateContacts } from './utils/httpUtils';
 
 function App() {
@@ -13,11 +13,14 @@ function App() {
   const [isLoading, setLoading] = useState<boolean>(false)
 
   const selected = useAppSelector(getSelectedContact)
+  const nameOrder = useAppSelector(getDisplayOrder)
+  const location = useLocation()
+  const dispatch = useAppDispatch()
 
   async function get(){
     try {
       setLoading(true)
-      const list = await populateContacts()
+      const list = (await populateContacts()).sort((a, b) => {return sortContactsList(a, b, nameOrder)})
       setContactsList(list)
     } catch (err) {
       const error = err as Error
@@ -31,6 +34,14 @@ function App() {
   useEffect(() => {
     get()
   }, [])
+
+  useEffect(() => {
+    console.log(location)
+    if (location.pathname === "/"){
+      get()
+      dispatch(deselectContact())
+    }
+  }, [location])
   
   return (
     <div className="App">

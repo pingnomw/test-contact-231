@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkPhoto, contactNoId2str, ContactProp, DIGITS_ONLY_REGEX, emptyContact, prepareContact } from "../utils/contactUtils";
-import { createNewContact, modifyContact } from "../utils/httpUtils";
+import { createNewContact, deleteContact, modifyContact } from "../utils/httpUtils";
 import editStyles from "./editStyles";
 
 export default function EditContact(props: ContactProp){
@@ -63,6 +63,19 @@ export default function EditContact(props: ContactProp){
     }
   })
 
+  async function deleteThisContact(id: string) {
+    try {
+      setLoading(true)
+      await deleteContact(id)
+      navigate(-1)
+    } catch (err) {
+      setLoading(false)
+      const error = err as Error
+      console.log(err)
+      alert(error.message)
+    }
+  }
+
   return (
     <div style={{
       width: 300
@@ -84,8 +97,18 @@ export default function EditContact(props: ContactProp){
           id="photo" name="photo" label="Photo URL (optional)"
           value={formik.values.photo} onChange={formik.handleChange}
         />
-        <Button variant="contained" type="submit" disabled={isLoading}>Save</Button>
-        <Button onClick={() => navigate(-1)} disabled={isLoading}>Cancel</Button>
+        <Button style={editStyles.button} variant="contained" type="submit" disabled={isLoading}>
+          Save
+        </Button>
+        <Button style={editStyles.button} variant="outlined" onClick={() => navigate(-1)} disabled={isLoading}>
+          Cancel
+        </Button>
+        {(!!id) ? <div style={{padding: 10, width: "100%", textAlign: "center"}}>
+          <Button style={{...editStyles.deleteButton, color: (isLoading ? "silver" : "red")}} onClick={() => deleteThisContact(id)} disabled={isLoading}>
+            Delete
+          </Button>
+        </div> : null}
+        
       </form>
     </div>
   )

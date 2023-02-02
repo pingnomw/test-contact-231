@@ -7,6 +7,7 @@ import ContactDetail from '../components/detail';
 import ContactsList from '../components/list';
 import { ContactsListProp } from '../utils/contactUtils';
 import { deselectContact, getSelectedContact } from '../features/contacts/contactsSlice';
+import { Add } from '@mui/icons-material';
 
 export default function Homepage(props: ContactsListProp){
   const contactsList = props.contacts
@@ -34,10 +35,15 @@ export default function Homepage(props: ContactsListProp){
       verticalAlign: "top",
       textAlign: "start"
     }}>
-      <Button variant='contained' onClick={() => {
-        dispatch(deselectContact())
-        navigate("/edit")
-      }}>
+      <Button
+        variant='contained'
+        sx={{margin: "8px 16px"}}
+        onClick={() => {
+          dispatch(deselectContact())
+          navigate("/edit")
+        }}
+      >
+        <Add />
         Create new contact
       </Button>
       <ContactsList contacts={contactsList}/>
@@ -60,7 +66,10 @@ export default function Homepage(props: ContactsListProp){
         verticalAlign: "top",
         textAlign: "start",
       }}>
-        <ContactDetail contact={selected} />
+        <div style={{position: "fixed"}}>
+          <ContactDetail contact={selected} />
+        </div>
+        
       </div>
     }
   </>)
